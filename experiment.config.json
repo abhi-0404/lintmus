@@ -1,0 +1,21 @@
+{
+  "flag": "finding_style",
+  "control": { "key": null, "value": "explain_first" },
+  "variation": { "key": "fix-first", "value": "fix_first" },
+  "split": { "explain_first": 50, "fix_first": 50 },
+  "metrics": [
+    { "name": "finding_fixed_clean", "role": "primary", "direction": "up", "expectedDirection": "increase" },
+    { "name": "new_finding_after_edit", "role": "guardrail", "direction": "down", "expectedDirection": "not_increase" },
+    { "name": "finding_resolved", "role": "informational", "direction": "informational" },
+    { "name": "fix_copied", "role": "informational", "direction": "informational" }
+  ],
+  "flagTimeoutMs": 1500,
+  "mdeRelative": 0.15,
+  "ship": { "expectedLossMaxPoints": 0.5, "chanceToBeatWin": 0.95, "chanceToBeatLose": 0.05, "guardrailHarmPoints": 3, "guardrailMinEventsPerArm": 5 },
+  "flagsmithFloor": { "identitiesPerArm": 50, "conversionsPerArm": 5, "srmCheckAfterIdentities": 100 },
+  "settle": { "idleMs": 4000, "maxChangeFraction": 0.6 },
+  "horizon": { "startIST": "2026-11-26T16:00:00+05:30", "analysisIST": "2026-11-29T11:00:00+05:30" },
+  "environments": { "real": "real", "sim": "sim" },
+  "excludedIdentityPrefix": "test-",
+  "internalQueryParam": "internal"
+}

@@ -1,0 +1,23 @@
+# dependencies and build output
+node_modules
+dist
+dist-ssr
+*.tsbuildinfo
+coverage
+
+# secrets and local config
+.env
+.env.*
+!.env.example
+*.local
+
+# logs
+logs
+*.log
+pnpm-debug.log*
+
+# editor and OS
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store

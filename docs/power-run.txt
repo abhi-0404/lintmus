@@ -1,0 +1,23 @@
+power.ts: 1000 offline reruns, 3000 identities per rerun (1500 per arm), seed=2026, 2000 posterior draws per comparison, baseline 35.0%
+Rule thresholds: P(beat) > 0.95, 95% CrI excludes 0, expected loss < 0.5 pts, guardrail harm > 3 pts. SRM alpha used by the rule: 0.01.
+Our own Beta-Binomial reading, not Flagsmith's number. The simulation says nothing about developers.
+
+1. Power at the MDE (binomial counts, primary only)
+   +15% relative (the MDE): P(beat) > 95% in 90.9% of reruns; full primary win clause (P>95%, CrI excl 0, expected loss < 0.5 pts) in 84.0%
+   +18% relative (the MDE world): P(beat) > 95% in 96.5% of reruns; full primary win clause (P>95%, CrI excl 0, expected loss < 0.5 pts) in 94.2%
+
+2. A/A false positive rate (binomial, no real effect)
+   P(beat) > 95%: 5.1%   P(beat) < 5%: 6.6%   primary win clause: 3.3%
+
+3. Behavioural-model worlds, full decision rule per rerun
+   aa   mean clean-fix lift 0.3%, mean guardrail diff 0.01 pts, P(beat)>95% 5.4% | rule: void 0.8%, lose 4.2%, win 2.4%, inconclusive 92.6%
+   mde  mean clean-fix lift 18.0%, mean guardrail diff 0.82 pts, P(beat)>95% 96.8% | rule: void 1.2%, win 91.7%, inconclusive 7.1%
+   harm mean clean-fix lift 23.0%, mean guardrail diff 5.67 pts, P(beat)>95% 99.8% | rule: void 1.0%, lose 99.0%
+   srm  mean clean-fix lift 18.6%, mean guardrail diff 0.84 pts, P(beat)>95% 96.9% | rule: void 58.5%, win 38.0%, inconclusive 3.5%
+
+4. SRM detection (chi-square on exposure counts vs 50/50; SRM world drops 10.0% of fix_first exposures)
+   aa   flagged at p<0.05: 5.1%   p<0.01: 0.8%   p<0.001: 0.1%
+   srm  flagged at p<0.05: 79.0%   p<0.01: 58.5%   p<0.001: 30.9%
+   Flagsmith's own SRM threshold is not known here; if it is strict (p<0.001), a 10% drop at 1,500 per arm is detected only about 3 times in 10 (try --drop 0.2; see ASSUMPTIONS.md).
+
+Done in 13.4 s
