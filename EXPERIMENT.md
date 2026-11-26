@@ -2,8 +2,8 @@
 
 FINAL. Committed before the `real` experiment starts. From the commit below on, this file does not change except to fill the "recorded" lines.
 
-- Commit hash: (recorded in the next commit)
-- Commit time (IST): (recorded in the next commit)
+- Commit hash: 6b82376 ("Finalize experiment pre-registration")
+- Commit time (IST): 2026-11-26 17:04
 - `real` experiment start (IST): (to be recorded when started)
 
 Flag: `finding_style` (multivariate). Control `explain_first`, variation key `fix-first` (value `fix_first`), 50/50. Machine-readable settings are in `experiment.config.json`.
