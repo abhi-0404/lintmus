@@ -106,3 +106,9 @@ Not installed or read. The plan's r02 and r04 use these names, all UNVERIFIED an
 6. `loadingState.source` can be `CACHE`; the plan only mentions "default handler or the 1.5 s timeout". Treat anything but `SERVER` as not exposable, and consider `cacheFlags: false` for the experiment flag.
 7. What `variant` is for the control arm (undefined, "control" or the option value) is not stated in the types. Check in the smoke experiment before writing exposure value logic.
 8. Events API URL default `https://events.api.flagsmith.com/`; a self-hosted Flagsmith needs `eventProcessorConfig.eventsApiUrl` (`FLAGSMITH_EVENTS_API_URL` in `.env.example`).
+
+## Verified on Flagsmith Cloud (Nov 27, sim smoke experiment 721)
+- Item 7 closed: the control arm's `flag.variant` is the string `"control"`; the variation's is its key `"fix-first"`. Values are `explain_first` / `fix_first`.
+- An identity in a running experiment gets `experiment: { id, name, inExperiment: true }` and `isDefault: false` from `getIdentityFlags`.
+- The experiment wizard takes ONE metric (the primary) with an expected direction; picking another metric replaces it. The guardrail
+  `new_finding_after_edit` cannot be attached in the UI, so the guardrail reading comes from our own counts (`expected-loss.ts`) or the API.

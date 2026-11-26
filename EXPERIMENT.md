@@ -4,7 +4,7 @@ FINAL. Committed before the `real` experiment starts. From the commit below on, 
 
 - Commit hash: 6b82376 ("Finalize experiment pre-registration")
 - Commit time (IST): 2026-11-26 17:04
-- `real` experiment start (IST): (to be recorded when started)
+- `real` experiment start (IST): 2026-11-27 00:57 (Flagsmith experiment id 725, deployed commit b183960)
 
 Flag: `finding_style` (multivariate). Control `explain_first`, variation key `fix-first` (value `fix_first`), 50/50. Machine-readable settings are in `experiment.config.json`.
 

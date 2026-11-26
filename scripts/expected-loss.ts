@@ -7,7 +7,7 @@
 //        [--flagsmith-guardrail-losing] [--seed 1] [--draws 100000]
 import { readFileSync } from 'node:fs'
 import { pathToFileURL } from 'node:url'
-import { compare, type ArmCounts, type Comparison } from './stats/beta.ts'
+import { compare, srmPValue, type ArmCounts, type Comparison } from './stats/beta.ts'
 import { mulberry32 } from './sim/prng.ts'
 
 export interface Thresholds {
@@ -175,6 +175,10 @@ export function main(argv: string[]): number {
   console.log(`          expected loss of shipping ${d.expectedLossPoints.toFixed(3)} points`)
   console.log(`guardrail control ${input.guardControl}/${input.control.n} = ${pct(d.guardrail.control)}   variant ${input.guardVariant}/${input.variant.n} = ${pct(d.guardrail.variant)}   diff ${d.guardrail.diffPoints.toFixed(2)} pts   chance variant worse ${pct(d.guardrail.chanceWorse)}`)
   console.log(`          measured: ${d.guardrail.measured}   losing: ${d.guardrail.losing}`)
+  // Informational only: the pre-registered rule voids on Flagsmith's SRM warning (--srm-warning), not on this number.
+  const srmP = srmPValue(input.control.n, input.variant.n)
+  console.log(`srm       own chi-square p = ${srmP.toPrecision(3)} (50/50 expected; informational, the rule uses --srm-warning)`)
+  if (srmP < 0.01 && !input.srmWarning) console.log('          NOTE: own SRM check p < 0.01 but no --srm-warning given. Check the Flagsmith dashboard before trusting a Win.')
   console.log(`RULE ${d.rule}: ${d.outcome.toUpperCase()}`)
   for (const r of d.reasons) console.log(`  - ${r}`)
   console.log(`ACTION: ${d.action}`)

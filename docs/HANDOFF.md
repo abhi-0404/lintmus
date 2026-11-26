@@ -67,3 +67,72 @@ Results of `pnpm power` (seed 2026, saved in `docs/power-run.txt`): at 35% basel
 
 ## Dependencies
 No new dependency added in Phase 1. Installed set as in Phase 0 (react 19.2.4, @flagsmith/flagsmith 12.6.0, vite 7.3.8, vitest 4.1.12, typescript 7.0.2, @flagsmith/nodejs 9.5.0 dev, etc.).
+
+## Nov 26, late evening
+- Flagsmith keys expected Nov 27 after 15:00 IST, so the `real` start moves to about Nov 27 17:00-18:00 IST (planned Nov 26 16:00).
+  Record the actual start time in EXPERIMENT.md line 7 and the late start as a deviation in DECISION.md when it starts.
+- `docs/launch-posts.md`: wave 1 (Discord, LinkedIn, X, IITM groups) and wave 2 drafts, with rules that keep the experiment clean
+  (never name the arms, no internal links, no public peeking). Replace `<URL>` after the Vercel deploy.
+
+## Nov 27: Flagsmith Cloud wired (browser session)
+- Cloud project `lintmus` (id 56550) already had environments `real` and `sim` (plus the default Production and lintmus); both show the managed
+  Flagsmith warehouse as connected. No `sim-aa` / `sim-mde` / `sim-harm` / `sim-srm` environments: run the worlds sequentially in `sim`.
+- Created metrics in BOTH `real` and `sim` (metrics are per environment in the dashboard), all Occurrence, event name = metric name:
+  `finding_fixed_clean` (higher is better), `new_finding_after_edit` (lower is better), `finding_resolved` and `fix_copied` (informational).
+- Created feature `finding_style` (all environments): enabled, control value `explain_first`, one variant with key `fix-first` and value
+  `fix_first`, default weight 0. Verified through the edge SDK API: both envs serve `finding_style enabled=true value=explain_first`.
+- `.env` created from `.env.example` (git-ignored) with the CLIENT-side keys: `VITE_FLAGSMITH_ENVIRONMENT_KEY` and `FLAGSMITH_ENV_KEY_REAL` = real,
+  `FLAGSMITH_ENV_KEY_SIM` = sim. No server-side keys were created. `pnpm run ping` (not `pnpm ping`, which is pnpm's own registry ping):
+  real and sim accepted `prework_ping` for identity `prework-test`.
+- NO experiment was created or started in any environment.
+- Next: smoke experiment in `sim` (plan step 10, confirms the control `variant` string), Vercel deploy (`lintmus` with the real key,
+  `lintmus-sim-demo` with the sim key and `VITE_LINTMUS_ENV=sim`), then start the `real` experiment and record the time in EXPERIMENT.md line 7.
+
+## Nov 27 (later): smoke done, Vercel waiting on identity check, `real` NOT started
+- `sim` smoke experiment "SIM smoke: finding_style pipeline check" (id 721, 100% rollout, 50/50, primary `finding_fixed_clean` increase).
+  `pnpm run smoke`: 120 of 120 enrolled. Flagsmith matched the script exactly: control 58 exposures 31.0% (18), fix-first 62 exposures 22.6% (14).
+  Screenshot `docs/results/2026-11-27-sim-smoke-results.jpg`. Completed with "Roll out control", so `sim` serves `explain_first` again.
+- Findings: control `variant` = `"control"` (sdk-facts item 7 closed, app needs no change); wizard allows only one metric per experiment
+  (no guardrail in Flagsmith results, see sdk-facts.md). The below-floor `fix_copied` display could not be observed for that reason.
+- Vercel: project `lintmus` from abhi-0404/lintmus (Vite preset, root ./, env `VITE_FLAGSMITH_ENVIRONMENT_KEY` = real client key) was submitted,
+  but Vercel asked for an identity verification code; the deploy has NOT run. Owner must enter the code in the open tab.
+- `real` experiment deliberately NOT started: start it only after the live site loads and `finding_style` resolves from the server.
+  Then record the start time in EXPERIMENT.md line 7. Second Vercel project `lintmus-sim-demo` (sim key + `VITE_LINTMUS_ENV=sim`) still to do.
+
+## Nov 27, 00:57 IST: `real` experiment STARTED
+- Live: https://lintmus.vercel.app (Vercel project `lintmus`, commit b183960, bundle has the `real` client key only; loads identity flags
+  from edge.api.flagsmith.com with 200). Sim demo: https://lintmus-sim-demo.vercel.app (project `lintmus-sim-demo`, env
+  `VITE_FLAGSMITH_ENVIRONMENT_KEY` = sim key and `VITE_LINTMUS_ENV=sim`, shows the SIMULATION DEMO banner, `real` key absent).
+- Flagsmith `real` experiment id 725 "Lintmus finding card: fix_first vs explain_first": exact hypothesis from EXPERIMENT.md, 100% rollout,
+  50/50, primary `finding_fixed_clean` increase. Started 2026-11-27 00:57 IST. Probe identities `test-start-check-1..3` (no events sent)
+  are enrolled in both arms. EXPERIMENT.md line 7 filled in; DECISION.md created with deviations 1 (late start) and 2 (no guardrail in Flagsmith).
+- `docs/launch-posts.md`: `<URL>` replaced with https://lintmus.vercel.app. Posting is the owner's job.
+- From now on: do NOT change layouts, exposure or metric code (voids the result). Sim worlds go in `sim` with new experiments.
+- Uncommitted: EXPERIMENT.md (start line), DECISION.md, docs/HANDOFF.md, docs/sdk-facts.md, docs/launch-posts.md, docs/results/. Commit and push
+  when the owner asks (only docs, so the experiment stays valid).
+- Next: check exposures arrive in `real` after the first visitors (Refresh in the dashboard, max once per 5 min); run the 4 sim worlds
+  (`pnpm simulate -- --world <aa|mde|harm|srm> --env sim`, each with its own experiment in `sim`); analysis 2026-11-29 11:00 IST.
+
+## Nov 27: sim worlds, A/A done
+- A/A world ran live in `sim` (seed 42, 3,000 identities, 0 errors, 0 not enrolled). explain_first 507/1521 (33.3%), fix_first 527/1479
+  (35.6%); guardrail 10 vs 12. Own rule: INCONCLUSIVE (P(beat) 90.8%, 95% CrI [-1.10, 5.70] pts, expected loss 0.075 pts), the
+  correct A/A outcome. Saved in `docs/results/2026-11-27-sim-aa.txt`. Flagsmith's own dashboard reading of the A/A experiment is
+  still to be recorded there.
+- MDE dry run OK (model: 34.9% -> 41.3%, +18% relative).
+- Blocked: Claude in Chrome was not connected, so the A/A experiment is not yet completed in Flagsmith and the MDE experiment is
+  not yet created. Next: record Flagsmith's A/A reading, complete that experiment, create and START "SIM MDE" in `sim` (same flag,
+  100% rollout, 50/50, primary `finding_fixed_clean` increase), then
+  `pnpm simulate -- --world mde --seed 42 --n 3000 --env sim` (about 15 minutes). Then harm, then srm.
+
+## Nov 27, 01:40 IST: MDE aborted, browser not connected, offline prep done
+- A/A done and recorded in `docs/results/sim-worlds.md` (experiment 740; Flagsmith shows a 90% "winner" banner, our rule says INCONCLUSIVE).
+- MDE seed 42 aborted at 1,500/3,000 (session closed mid-run). Owner chose: complete that partial experiment with "Roll out control"
+  without reading it, rerun MDE with `--seed 43` in a fresh experiment. Details in sim-worlds.md.
+- Claude in Chrome was NOT connected this session, so nothing changed in Flagsmith. The partial MDE experiment is still RUNNING in `sim`.
+- Offline: dry runs for MDE s43, harm, SRM and their expected verdicts are in sim-worlds.md. Found that the SRM world (10% drop,
+  p = 0.033) wins under our rule unless Flagsmith itself warns. `scripts/expected-loss.ts` now prints our own SRM p and a NOTE
+  (informational, rule unchanged; scripts only, so the `real` experiment stays valid). 104 tests pass, build and typecheck clean.
+- Live sites both return 200 (https://lintmus.vercel.app, https://lintmus-sim-demo.vercel.app).
+- Next (needs the browser): complete the partial MDE experiment, create and START "SIM MDE s43", run
+  `pnpm simulate -- --world mde --seed 43 --n 3000 --env sim` (keep the session open about 15 min), read Flagsmith vs `pnpm expected-loss`,
+  complete; then harm, then SRM (owner chose both: pre-registered `--drop 0.1`, then a labelled `--drop 0.2` extra, each its own experiment). Analysis of `real` 2026-11-29 11:00 IST.
