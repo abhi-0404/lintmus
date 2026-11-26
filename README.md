@@ -52,7 +52,9 @@ survives once blind-paste errors are counted. The guardrail is there to answer i
 How it is kept honest:
 
 - **Pre-registered.** [EXPERIMENT.md](EXPERIMENT.md) fixes the hypothesis, population, metrics and the ship or refuse
-  rule before the experiment starts. Settings are in [experiment.config.json](experiment.config.json).
+  rule before the experiment starts. Settings are in [experiment.config.json](experiment.config.json). A win needs
+  Flagsmith's chance to beat control above 95% and a 95% credible interval that excludes 0 (together about 97.5%
+  one-sided), an expected loss of shipping under 0.5 points, and a guardrail that is measured and not losing.
 - **Clean exposures.** An exposure is recorded once per session, only for a value served by Flagsmith inside the
   running experiment. A visitor whose flag times out (1.5 s) sees the control and is never counted. `test-` identities,
   `?internal=1` sessions and visitors who press "Do not track me" are excluded.
