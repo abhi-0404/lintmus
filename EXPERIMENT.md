@@ -1,9 +1,9 @@
 # Lintmus experiment pre-registration
 
-DRAFT, local only. Not committed. Commit this file (and record the commit hash and time here) before the `real` experiment starts, then do not change it except to fill the two "recorded" lines below.
+FINAL. Committed before the `real` experiment starts. From the commit below on, this file does not change except to fill the "recorded" lines.
 
-- Commit hash: (to be recorded at commit time)
-- Commit time (IST): (to be recorded at commit time)
+- Commit hash: (recorded in the next commit)
+- Commit time (IST): (recorded in the next commit)
 - `real` experiment start (IST): (to be recorded when started)
 
 Flag: `finding_style` (multivariate). Control `explain_first`, variation key `fix-first` (value `fix_first`), 50/50. Machine-readable settings are in `experiment.config.json`.
