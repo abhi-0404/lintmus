@@ -15,9 +15,9 @@ set below is used.
 | Project name | Lintmus |
 | Tagline (one line) | A linter for Flagsmith experiment code, that runs a real Flagsmith experiment on itself. |
 | Track | Test Something Real |
-| Repository | <REPO_URL> |
+| Repository | https://github.com/abhi-0404/lintmus |
 | Demo video | <VIDEO_URL> |
-| Live app | <LIVE_URL> |
+| Live app | https://lintmus.vercel.app |
 | Team size | Rules allow 1-4; fill in on the form |
 
 ## Description (about 230 words)
@@ -56,7 +56,8 @@ later. Lintmus shows the mistake, why it breaks the experiment and the corrected
   that came from the Flagsmith server counts, never a default or cached one.
 - **Results**: Flagsmith's Bayesian chance to beat control, delta and credible interval drive the decision.
 - **Node SDK** `@flagsmith/nodejs` 9.5.0 in a separate `sim` environment for the simulated worlds (never `real`).
-- Flagsmith's SRM warning is a void condition in the pre-registered rule.
+- Flagsmith's SRM warning is a void condition in the pre-registered rule. In the simulated worlds Flagsmith showed no SRM
+  warning even at a 55/45 split, so the analysis also reports our own chi-square SRM p (see the SRM finding below).
 
 ## What is technically hard
 
@@ -110,16 +111,22 @@ Run 2026-11-27 through the real Node SDK, 3,000 identities per world, seed 42.
 | World | Sent | Flagsmith reading | Our rule |
 |---|---|---|---|
 | A/A (experiment 740) | control 507/1,521 clean fixes (33.3%), variant 527/1,479 (35.6%) | +6.9%, 95% CrI [-3.7%, 17.5%], 90% chance to be best; banner suggests rolling out | INCONCLUSIVE (chance to beat control 90.8%, interval includes 0); pass |
-| MDE | control 509/1,486 (34.3%), variant 618/1,514 (40.8%), lift +19.2% | PENDING | WIN (99.99%, CrI [3.11, 10.01] points); Flagsmith side pending |
-| Harm | not run live | PENDING | PENDING |
-| Broken split (SRM) | not run live | PENDING | PENDING |
+| MDE (747) | control 509/1,486 (34.3%), variant 618/1,514 (40.8%), lift +19.2% | +19.2%, 95% CrI [8.1%, 30.3%], > 99% chance to be best | WIN (99.99%, CrI [3.11, 10.01] points); both agree; pass |
+| Harm (1415) | control 535/1,550 (34.5%), variant 632/1,450 (43.6%); guardrail 6 vs 91 (0.4% vs 6.3%) | +26.3%, 95% CrI [14.9%, 37.7%], > 99%; banner suggests rolling out | LOSE (guardrail worse by 5.89 points, limit 3); pass |
+| Broken split, 10% exposures dropped (1416) | control 1,487 exposed, variant 1,364 of 1,513 exposed | split 52/48, +25.2%, > 99%; no SRM warning | WIN (own SRM p = 0.021); fail, should have voided |
+| Broken split, 20% dropped, labelled extra (1425) | control 1,490 exposed, variant 1,200 of 1,510 exposed | split 55/45, +26.4%, > 99%; no SRM warning | WIN with the script's SRM note (own p = 2.3e-8); fail, should have voided |
 
 Finding from the A/A world: Flagsmith's default banner recommended shipping a change with no true difference at a 90%
 reading. The pre-registered rule (above 95% and an interval that excludes 0) refused it.
 
-Finding from the dry runs: the rule voids only on Flagsmith's SRM warning, and a 10% exposure drop gives our own
-chi-square p = 0.033, so a strict Flagsmith check could stay quiet. The rule is unchanged; the script now prints its own
-SRM p-value and a note.
+Finding from the harm world: Flagsmith's experiment judges only the primary metric (the guardrail cannot be attached),
+so it showed "> 99% winner" for a variant that made blind-paste errors 16 times more common. The pre-registered guardrail
+clause refused it.
+
+Finding from the broken-split worlds, reported as a failure: the rule voids only on Flagsmith's SRM warning, and
+Flagsmith showed none at 52/48 or at 55/45, so the rule called both broken experiments a win. The rule is unchanged
+(pre-registered); the script prints its own SRM p-value and a note, and the real analysis reports that p next to the
+verdict and flags p < 0.01 by hand.
 
 ## Judging criteria
 
@@ -127,7 +134,7 @@ SRM p-value and a note.
 |---|---|
 | Use of Flagsmith: is it core? do flags and experiments do real work? | The product's central UI is switched by a multivariate flag, and the exposure and four metrics are real Flagsmith events from live visitors. The decision to ship or refuse is read from Flagsmith's Bayesian results plus a stricter pre-registered rule. |
 | Impact: real problem? would a developer or team use it? | Silent experiment bugs (events disabled, no exposure, a misspelled metric) leave an experiment on "Collecting data" for weeks, and the lint rules name each one with a copyable fix. Real demand is not yet measured; adoption evidence is the experiment's own traffic, PENDING. |
-| Creativity: new idea or a familiar idea taken somewhere new? | A linter that is also the subject of its own A/B test, with the question "does showing the fix first still win once blind-paste errors are counted?". The guardrail and a simulated A/A world showing the dashboard's 90% banner would ship a no-effect change are the unusual parts. |
+| Creativity: new idea or a familiar idea taken somewhere new? | A linter that is also the subject of its own A/B test, with the question "does showing the fix first still win once blind-paste errors are counted?". The guardrail, a simulated A/A world showing the dashboard's 90% banner would ship a no-effect change, and a harm world where the dashboard says ship while the guardrail refuses are the unusual parts. |
 | Demo video: problem, what was built, how Flagsmith fits | Scripted in `docs/demo-script.md` (cap 2:30): the silent bug, the puzzle and a finding, the flag and metrics in Flagsmith, the pre-registered rule, the result. Video not recorded yet: <VIDEO_URL>. |
 
 ### Track 1 judging points (Test Something Real)

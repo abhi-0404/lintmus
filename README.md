@@ -71,11 +71,25 @@ How it is kept honest:
   only counts as fixed if the code it belongs to is still there.
 - **Decision rule tested before launch.** A simulator replays the experiment in four worlds (no effect, the minimum
   detectable effect, a harmful variant, a broken traffic split) and checks that the rule ships, holds or refuses as
-  it should. The results, including the one world where it fails, are in [Simulated worlds](#simulated-worlds-simulated-not-real-visitors).
+  it should. The results, including the SRM world where it fails (and a non-pre-registered 20% extra that fails the same way), are in [Simulated worlds](#simulated-worlds-simulated-not-real-visitors).
   Every assumed number is listed in [ASSUMPTIONS.md](ASSUMPTIONS.md); the saved power run is in
   [docs/power-run.txt](docs/power-run.txt).
 
 Only event names go to Flagsmith (the exposure plus the four metrics above). No code, no personal data.
+
+## Impact
+
+- **Who it is for:** developers and teams setting up Flagsmith Experimentation, often for the first time. The failure
+  it targets is silent: a mis-set SDK option or metric name gives an experiment that looks healthy and measures
+  nothing, and the cost is found weeks later.
+- **What it changes:** the mistake, the reason it breaks the experiment and a corrected snippet appear while the code
+  is being written, in the browser, with nothing uploaded.
+- **Beyond the linter:** the pre-registered rule and the simulated worlds are reusable as a checklist for any small
+  experiment: a 90% banner on an A/A test, a guardrail the dashboard cannot see, and a broken split with no warning
+  are all shown with evidence above.
+- **What is not shown yet:** real demand. The only usage evidence is the experiment's own traffic (Results, below).
+  Scaling cost is close to static hosting plus Flagsmith event volume, because linting runs in the browser; the
+  running cost is rule upkeep as the SDKs change.
 
 ## How Flagsmith is used
 
@@ -100,6 +114,7 @@ Bayesian experiment results (plus a stricter pre-registered rule of our own).
 |---|---|
 | Browser app, client-side environment key | Build-time variable `VITE_FLAGSMITH_ENVIRONMENT_KEY` (read at `src/experiment/flagsmith.ts:23`), set in a git-ignored `.env` locally and in the Vercel project settings for the deployments (Vercel side UNVERIFIED from the repo). With no key the app shows the control layout, tracks nothing and says so in the footer (`flagsmith.ts:72`, `:163`). |
 | Node scripts, one key per environment | `FLAGSMITH_ENV_KEY_<ENV>` (for example `FLAGSMITH_ENV_KEY_SIM`) from the git-ignored `.env`, read in `scripts/simulate.ts:94-96`. `.env.example` lists the variable names only, with no values. |
+| Sim-demo banner switch | `VITE_LINTMUS_ENV=sim` at build time shows the red SIMULATION DEMO banner (`src/ui/SimDemoBanner.tsx:3`). Not a secret; empty on the real deployment. |
 | Optional self-hosted overrides | `VITE_FLAGSMITH_API_URL`, `VITE_FLAGSMITH_EVENTS_API_URL` (browser), `FLAGSMITH_API_URL`, `FLAGSMITH_EVENTS_API_URL` (scripts). Not used for the Cloud runs. |
 
 `.env` is git-ignored and not tracked; only `.env.example` is tracked.
@@ -129,7 +144,7 @@ Browser app, `@flagsmith/flagsmith` 12.6.0 (all wiring is in one file):
 | `flagsmith.flushEvents()` | `flagsmith.ts:122` | On `visibilitychange` to hidden and on bfcache `pagehide`. The SDK has no unload handling of its own. |
 | `flagsmith.close(1000)` | `flagsmith.ts:133` | On a real `pagehide`; the browser `close` requires the timeout argument. |
 
-Node scripts, `@flagsmith/nodejs` 9.5.0 (simulator and checks; they run only in `sim`, never in `real`):
+Node scripts, `@flagsmith/nodejs` 9.5.0 (simulator and checks; `simulate` refuses `real` and `smoke` uses only the `sim` key; `ping` sends one pre-work test event, identity `prework-test`, to every environment with a key, `real` included):
 
 | Call | File:line | Purpose |
 |---|---|---|
@@ -246,6 +261,19 @@ What this project does not claim, and where it can be wrong.
   (`docs/analysis-runbook.md` section 2). The flag informs readers; it does not change the matched row.
 - Lesson for the next experiment: the rule should run its own SRM check (for example p < 0.01 voids) instead of
   relying on the platform's warning.
+
+## Beta feedback for Flagsmith
+
+What we would change after running six experiments on Flagsmith Cloud. Details, evidence and a draft upstream issue:
+[docs/flagsmith-feedback.md](docs/flagsmith-feedback.md).
+
+- Show a sample ratio mismatch check on the results page: a 55/45 split on a 50/50 rollout showed no warning (SIMULATED).
+- Allow guardrail metrics: with one metric per experiment, the page suggested rolling out a variant that made the
+  guardrail event 16 times more common (SIMULATED).
+- Do not suggest a rollout at 90% while the credible interval includes 0 (SIMULATED A/A), and do not pre-select
+  "Roll out a variant" in the Complete dialog.
+- Browser SDK: warn when an event is dropped because `enableEvents` is off (Node throws, the browser stays silent),
+  and document that `getExperimentFlag` records an exposure as a side effect.
 
 ## Run it
 

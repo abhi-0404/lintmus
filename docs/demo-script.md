@@ -1,6 +1,6 @@
 # Demo video script (Track 1, Lintmus)
 
-Status: draft written Nov 27 (night). Beat 3 is filled on Nov 29 after the analysis (see `analysis-runbook.md`). Every other beat can be recorded on Nov 28 evening.
+Status: draft written Nov 27 (night), updated Nov 28 00:45 IST with the live sim results. Beat 3 is filled on Nov 29 after the analysis (see `analysis-runbook.md`). Every other beat can be recorded on Nov 28 evening.
 
 ## Limits and ground rules
 - Length: the official brief (`research/00-official/hackathon-brief.md`, fetched Nov 25) says only "short demo video" and gives no number. The plan (`04-final-plan.md` section 10) sets under 2:30. Target 2:20-2:25, hard cap 2:30. Re-check the WeMakeDevs submission form for a stated limit; if it is shorter, cut beat 5 first, then beat 4b.
@@ -11,19 +11,20 @@ Status: draft written Nov 27 (night). Beat 3 is filled on Nov 29 after the analy
 - Do not show: `.env`, the Flagsmith "SDK Keys" page, or any account or billing page.
 - Do not open the real site with your own identity to "show" a layout: that adds an exposure to the live experiment. Capture both layouts from `https://lintmus-sim-demo.vercel.app` (shows the SIMULATION DEMO banner) or a local build, or use `?internal=1` on the real site (that session never records an exposure).
 
-## Assets and their status (checked against disk, Nov 27 night)
+## Assets and their status (checked against disk, Nov 28 00:45 IST)
 | Asset | Status |
 |---|---|
-| Live site https://lintmus.vercel.app | Reported 200 in HANDOFF (Nov 27 01:40); not re-checked by this doc. Check logged out before recording. |
-| Sim demo https://lintmus-sim-demo.vercel.app | Reported 200 in HANDOFF; same caveat. |
+| Live site https://lintmus.vercel.app | 200 on Nov 28 00:40 IST (checked with curl, no login). Still check logged out in a browser before recording. |
+| Sim demo https://lintmus-sim-demo.vercel.app | 200 on Nov 28 00:40 IST; same caveat. |
 | Flagsmith: flag `finding_style` (control `explain_first`, variation key `fix-first`) | Exists (HANDOFF). Screenshot not on disk: To do. |
 | Flagsmith: `real` experiment 725 page | Running since 2026-11-27 00:57 IST. Result screenshot To do (Nov 29 11:00). |
 | Flagsmith: metrics page | Screenshot not on disk: To do. |
 | EXPERIMENT.md commit 6b82376 (2026-11-26 17:04) then real start 2026-11-27 00:57 | On disk (`EXPERIMENT.md`, `DECISION.md`). |
 | A/A world: Flagsmith 90% banner + results table | On disk: `docs/results/2026-11-27-sim-aa-banner.jpg`, `...-sim-aa-results.jpg`, `2026-11-27-sim-aa.txt`. |
-| MDE world (seed 42) | Sent 3,000 of 3,000, our reading on disk (`sim-worlds.md`: RULE 4 WIN). Flagsmith screenshot not captured: To do. |
-| Harm world, SRM world | Not run yet (offline dry runs only). Screenshots To do. |
-| Rollout and rollback on sim-demo | Not recorded: To do (plan Phase 5). |
+| MDE world (747) | On disk: `2026-11-27-sim-mde-banner.jpg`, `-mde-results.jpg`. Flagsmith > 99% winner, our rule WIN. |
+| Harm world (1415) | On disk: `2026-11-27-sim-harm-banner.jpg`, `-harm-results.jpg`, `-harm.txt`. Flagsmith "> 99% winner, consider rolling out fix-first"; our rule `RULE 3: LOSE` (guardrail +5.89 points). |
+| SRM worlds (1416 at 10%, 1425 at 20% extra) | On disk: `2026-11-27-sim-srm-d10-banner.jpg`, `-d10-exposures.jpg`, `-d10.txt`, and the same for `d20`. Flagsmith showed NO SRM warning in either; our rule says WIN. Reported as a failure. |
+| Rollout and rollback on sim-demo | Not recorded: To do (plan Phase 5). Needs a flag change in `sim` (see beat 5), not the completed experiments. |
 | Smoke run | `docs/results/2026-11-27-sim-smoke-results.jpg` (120 users; optional b-roll). |
 
 If a world has no Flagsmith screenshot by recording time, show only what exists and drop its line from beat 4b. Do not show an offline dry run as if it were a live result.
@@ -36,11 +37,11 @@ If a world has no Flagsmith screenshot by recording time, show only what exists 
 | 2. The one experiment | 0:22-0:50 | (a) The two card layouts side by side (captures, see ground rules). (b) Flagsmith dashboard, flag `finding_style`: control `explain_first`, variation `fix-first`. (c) Experiment 725 page: hypothesis text, primary metric `finding_fixed_clean`, 50/50. (d) Terminal: `git log` showing the EXPERIMENT.md commit time before the start time in `DECISION.md`. | "Lintmus is also my test subject. How should a linter talk to you: explanation first, or the fix first? I did not guess. One multivariate flag in Flagsmith, two layouts, a real Flagsmith Experimentation run. Fix-first will obviously win raw fixes, so the question is whether it still wins once blind-paste errors count. The primary metric is clean fixes, the guardrail is new bugs. The rule for shipping was committed before the first visitor." |
 | 3. Real result (fill Nov 29) | 0:50-1:15 | `real` scorecard screenshot (`docs/results/2026-11-29-real-results.jpg`), then the terminal output of `pnpm expected-loss` with the matched rule line, then the matching row of the decision table in EXPERIMENT.md highlighted. | One variant from the table below. |
 | 4a. The contrast | 1:15-1:40 | Flagsmith A/A banner screenshot: "90% Winner Probability Confirmed ... Consider rolling out fix-first to all users." Caption: SIMULATED A/A, no true difference. Cut to terminal: `RULE 5: INCONCLUSIVE`, with "95% credible interval includes 0". | "Here is why I wrote the rule first. This is a simulated A/A world: both arms behave identically by construction. Flagsmith's dashboard still shows a 90 percent winner banner and says consider rolling out. Our pre-registered rule asks for more: over 95 percent, an interval that excludes zero, a small expected loss, and a guardrail that is not losing. It says inconclusive, which is the right answer. Without a rule written in advance, I would have shipped noise." |
-| 4b. Other worlds | 1:40-1:55 | One grid of the simulated scorecards that exist (MDE, harm, SRM), each captioned SIMULATED with seed. | "Same real SDK, same pipeline. At the smallest effect worth shipping: a win. A harmful variant: the guardrail blocks the ship even though the primary looks better. A dropped-exposure bug: the split check is what voids it. Simulated, and they validate the design and the rule, not developers." (Say the SRM line only if that world was run and Flagsmith warned; see the note below.) |
-| 5. Rollout and rollback | 1:55-2:10 | Sim-demo only: End Experiment on the simulated MDE experiment, choose to roll out `fix-first`, reload lintmus-sim-demo to show the new layout, then one flag update to roll back. | "When the rule says ship, a human ends the experiment in Flagsmith and the same flag rolls out the winner. Rollback is one flip, no deploy. This is the sim demo site, not the real one." |
-| 6. Close | 2:10-2:25 | README top, live URL, repo URL (github.com/abhi-0404/lintmus). Optional, only if they exist by then: Discord staff feedback on the rules, upstream issue. | "Lintmus: the linter for Flagsmith experiments, with its own product decision made by a Flagsmith experiment, and the result reported whichever way it went. Repo and live site are in the description." |
+| 4b. Other worlds | 1:40-1:58 | Harm banner screenshot ("> 99% Winner ... Consider rolling out fix-first") next to the terminal `RULE 3: LOSE` from `2026-11-27-sim-harm.txt`; then the d20 exposures chart (55% / 45%) with no warning on the page. Every image captioned SIMULATED, seed 42. | "Same real SDK, same pipeline. At the smallest effect worth shipping: a win, and Flagsmith agrees. A harmful variant: Flagsmith says roll it out, because it only sees the primary metric, while blind-paste errors went up sixteen-fold. The guardrail in our rule refuses it. And one honest miss: when I dropped a fifth of one arm's exposures, the split went 55 to 45, Flagsmith showed no warning and our rule would have shipped. So the analysis now checks the split itself. Simulated, all of it: it tests the design and the rule, not developers." |
+| 5. Rollout and rollback | 1:58-2:12 | Sim-demo only. All sim experiments are already completed with control (747 included), so End Experiment is no longer available there. Instead, in environment `sim`, open flag `finding_style` and set the variant weights to 100% `fix-first` (exact click path UNVERIFIED; a fresh short sim experiment ended with "Roll out a variant" also works), reload lintmus-sim-demo to show the fix-first card, then set it back to 100% control and reload again. Never do this in `real`. | "When the rule says ship, a human ends the experiment in Flagsmith and the same flag rolls out the winner. Rollback is one flip, no deploy. This is the sim demo site, not the real one." |
+| 6. Close | 2:12-2:27 | README top, live URL, repo URL (github.com/abhi-0404/lintmus). Optional, only if they exist by then: Discord staff feedback on the rules, upstream issue. | "Lintmus: the linter for Flagsmith experiments, with its own product decision made by a Flagsmith experiment, and the result reported whichever way it went. Repo and live site are in the description." |
 
-Notes on 4b: the SRM line is not yet earned. The SRM world has not been run live, and `sim-worlds.md` records that the pre-registered 10 percent drop gives our own chi-square p = 0.033, so Flagsmith may stay quiet. Say what Flagsmith actually did. If it stayed quiet at 10 percent and warned at the labelled 20 percent extra run, say exactly that.
+Notes on 4b: the SRM line is earned now and must stay honest. Flagsmith did not warn at 10% or at 20% dropped (`sim-worlds.md`). Do not say "the split check voids it". If time is short, keep the harm line and cut the SRM line, never the other way round, and never cut the word "simulated".
 
 ## Beat 3 variants (use the one matching the row of EXPERIMENT.md section 8 that the runbook selected)
 Fill N and the numbers from `DECISION.md`. Read the claim aloud with the caveat in the same sentence.

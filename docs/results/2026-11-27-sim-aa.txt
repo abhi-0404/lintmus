@@ -31,4 +31,6 @@ RULE 5: INCONCLUSIVE
 ACTION: Do not ship. Keep explain_first and keep running. Publish the expected loss of shipping now.
 
 ## Flagsmith dashboard reading
-Pending (to be recorded from the sim experiment page).
+Recorded in `sim-worlds.md` (experiment 740): identical counts; fix-first +6.9%, 95% CrI [-3.7%, 17.5%], 90% chance to be
+best; banner "90% Winner Probability Confirmed. Consider rolling out fix-first to all users." No SRM warning.
+Screenshots: `2026-11-27-sim-aa-banner.jpg`, `2026-11-27-sim-aa-results.jpg`.

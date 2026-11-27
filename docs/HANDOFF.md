@@ -172,3 +172,27 @@ Docs only; nothing under `src/`, `tests/`, `scripts/` or config was touched, so 
   placeholder), updated with all live sim results (A/A, MDE, Harm PASS; SRM 0.1 and SRM extra 0.2 FAIL) and the manual SRM check.
 - Draft file deleted after the merge (still in history at 9e48b7f). Still open: demo video link (not in README yet); fill Results after
   the 2026-11-29 11:00 IST analysis.
+
+## Nov 28 (night, 00:30-01:30 IST): docs-only work while the owner slept
+Done (no change to `src/`, `scripts/`, `tests/` or config; code diff against b183960 is empty):
+- `pnpm test` 104/104 pass and `pnpm build` clean on 7340cd7: `docs/results/2026-11-28-test-build.txt`.
+- Both live sites return 200 anonymously (about 0.9 s); the GitHub repo is public (anonymous API 200).
+- Independent review of every README claim: all file:line refs and simulated numbers correct. Fixed: `ping` does send to
+  `real` (README said scripts only touch `sim`), "one world fails" is two, sim-worlds lesson threshold now p < 0.01.
+  Not fixed (frozen code): `src/experiment/exposure.ts:15` comment still says the control variant string is unverified;
+  change it only after the Nov 29 analysis.
+- README: added Impact, Beta feedback for Flagsmith, the sim banner switch `VITE_LINTMUS_ENV` in the Keys table.
+- New `docs/flagsmith-feedback.md`: 10 feedback points with evidence and a draft upstream issue (SRM check).
+- `docs/SUBMISSION.md`: repo and live URLs, all five sim worlds, harm and SRM findings. Only video URL and real result left.
+- `docs/demo-script.md`: assets updated, beat 4b rewritten (harm: Flagsmith says ship, guardrail refuses; SRM: honest miss),
+  beat 5 rewritten (sim experiments are completed, so roll out and roll back with a flag change in `sim`).
+- `docs/submission-checklist.md` statuses refreshed; A/A `.txt` Flagsmith reading filled in.
+- Scans: no em or en dashes, no AI mentions, no keys in any tracked or new file.
+
+Owner, in order (deadline 2026-11-29 20:00 IST, target 14:00):
+1. Nov 28: record beats 1, 2, 4a, 4b, 5, 6 (`docs/demo-script.md`); flag config and metrics page screenshots;
+   incognito and uBlock check; repo About URL; WeMakeDevs registration and team; star Flagsmith; file the SRM issue
+   from `docs/flagsmith-feedback.md` (optional) and add its link.
+2. Nov 29 11:00: `docs/analysis-runbook.md` with the browser connected (Claude can do the dashboard read, screenshots,
+   rule run, DECISION.md and README Results; completing experiment 725 per the matched row needs your OK).
+3. Nov 29 11:30: beat 3, edit, upload unlisted, put the video link in README and SUBMISSION.md, final push, submit.

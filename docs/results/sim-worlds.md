@@ -58,7 +58,7 @@ flag, so the one-running-experiment lock is per environment.
 - Must show: SRM warning, result void. Result: FAIL. Neither Flagsmith nor the pre-registered rule catches a 10% exposure loss
   at this sample size; both would ship. This confirms the dry-run finding above. Reported as is; the rule is not changed
   for the `real` experiment (that would break the pre-registration). Lesson for next time: the rule should run its own SRM check
-  (for example p < 0.05 voids) instead of relying on Flagsmith's warning alone.
+  (for example p < 0.01 voids) instead of relying on Flagsmith's warning alone.
 - Files: `2026-11-27-sim-srm-d10.log`, `2026-11-27-sim-srm-d10.txt`, `2026-11-27-sim-srm-d10-banner.jpg`,
   `2026-11-27-sim-srm-d10-exposures.jpg`.
 
