@@ -166,3 +166,9 @@ Docs only; nothing under `src/`, `tests/`, `scripts/` or config was touched, so 
   next to the verdict and flag p < 0.01 by hand (rule itself unchanged). Completed,
   control rolled out. All four sim experiments are now completed; nothing is running in `sim`.
 - Nothing committed. `real` experiment untouched (sim only, docs only).
+
+## Nov 27 (evening): README merged
+- `docs/README-draft-sections.md` merged into README.md (Live, How Flagsmith is used, Simulated worlds, Honesty box, Results
+  placeholder), updated with all live sim results (A/A, MDE, Harm PASS; SRM 0.1 and SRM extra 0.2 FAIL) and the manual SRM check.
+- Draft file deleted after the merge (still in history at 9e48b7f). Still open: demo video link (not in README yet); fill Results after
+  the 2026-11-29 11:00 IST analysis.
