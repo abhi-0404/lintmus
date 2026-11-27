@@ -1,0 +1,11 @@
+$ node scripts/expected-loss.ts "--" "--control-n" "1550" "--control-conv" "535" "--variant-n" "1450" "--variant-conv" "632" "--guard-control" "6" "--guard-variant" "91" "--seed" "1"
+Own Beta-Binomial reading (NOT Flagsmith's number). seed=1 draws=100000, uniform Beta(1,1) prior
+primary   control 535/1550 = 34.52%   variant 632/1450 = 43.59%
+          chance to beat control 100.00%   mean diff 9.06 pts   95% CrI [5.58, 12.53] pts
+          expected loss of shipping 0.000 points
+guardrail control 6/1550 = 0.39%   variant 91/1450 = 6.28%   diff 5.89 pts   chance variant worse 100.00%
+          measured: true   losing: true
+srm       own chi-square p = 0.0679 (50/50 expected; informational, the rule uses --srm-warning)
+RULE 3: LOSE
+  - guardrail point estimate worse by 5.89 points (limit 3)
+ACTION: Complete the experiment with rollout_decision = control. Delete the fix-first layout code.

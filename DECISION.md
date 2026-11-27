@@ -25,3 +25,60 @@ None.
 
 ## Verdict
 Pending (analysis 2026-11-29 11:00 IST).
+
+## Final result
+Template, filled on 2026-11-29 from 11:00 IST following `docs/analysis-runbook.md`. Leave a blank as "not available" with the reason, never delete a line. Nothing here changes the pre-registered rule. The simulated worlds are in `docs/results/sim-worlds.md` and are never mixed into this section.
+
+### Reading
+- Analysis time (IST): ___ ; Flagsmith Refresh clicked at (IST): ___
+- Screenshots: `docs/results/2026-11-29-real-results.jpg` ___ ; other: ___
+- Flagsmith shows a result or "Collecting data": ___
+
+| | explain_first (Control) | fix_first (fix-first) |
+|---|---|---|
+| Exposures (Flagsmith table) | ___ | ___ |
+| `finding_fixed_clean` occ. rate (Flagsmith) | ___ % | ___ % |
+| `finding_fixed_clean` conversions (derived: rate x exposures, rounded) | ___ | ___ |
+| Win probability (Flagsmith) | ___ % | ___ % |
+| Delta and 95% credible interval (Flagsmith, relative) | baseline | ___ , [___ , ___] |
+| `new_finding_after_edit` events (source: ___; our reading, not Flagsmith's number) | ___ | ___ |
+
+- Users enrolled (Flagsmith, informational): ___
+- Informational metrics (`finding_resolved`, `fix_copied`) per arm, if read: ___
+- `source = own_code` raw counts (exploratory only): ___
+
+### Void checks (rule 1)
+- Flagsmith SRM warning: yes / no / not visible in the UI (circle one; say where looked): ___
+- Quarantine share of exposed: ___ % (or not shown)
+- Code changed after start: no / yes. Evidence: output of `git diff --stat b183960 HEAD -- src index.html vite.config.ts package.json experiment.config.json` = ___ ; deployed commit = ___
+- Own chi-square SRM p from the script (informational): ___
+
+### Command and output
+```
+pnpm expected-loss -- --control-n ___ --control-conv ___ --variant-n ___ --variant-conv ___ --guard-control ___ --guard-variant ___ [flags: ___] --seed ___
+```
+Output (paste in full; this is our own Beta-Binomial reading, NOT Flagsmith's number):
+```
+___
+```
+Saved copy: `docs/results/2026-11-29-real-expected-loss.txt` ___
+
+### Rule walk (top to bottom, first match wins)
+1. Void: matched / not matched, because ___
+2. Below minimum: matched / not matched, because ___
+3. Lose: matched / not matched, because ___
+4. Win: matched / not matched, which condition failed: ___
+5. Inconclusive: matched / not matched, reasons: ___
+
+### Outcome and action
+- Matched row: ___ (outcome: ___)
+- Flagsmith and the script disagree across 5% or 95%: no / yes (numbers and the treatment chosen: ___)
+- Action taken in Flagsmith (what, time IST, screenshot): ___
+- State of `finding_style` and experiment 725 afterwards: ___
+- Next step for the flag and for the code (if any, after submission): ___
+
+### What we claim, and what we do not
+- Claim, in one sentence: ___
+- Not claimed: no simulated number is a real result; the simulation validates the design and the decision rule and says nothing about developers.
+- Limits restated: expected traffic was small (the plan expected 45-175 exposed identities) and the window was about 58 hours after the late start (deviation 1); the guardrail was not attached in Flagsmith (deviation 2), so it can block a ship on our own counts but cannot certify safety; fixing code in a text box understates real IDE fixing, more so in explain_first, which biases toward fix_first (EXPERIMENT.md section 9).
+- Rule-fix log at analysis time: ___ (none, or each fix with timestamp)

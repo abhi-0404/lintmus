@@ -119,20 +119,50 @@ No new dependency added in Phase 1. Installed set as in Phase 0 (react 19.2.4, @
   correct A/A outcome. Saved in `docs/results/2026-11-27-sim-aa.txt`. Flagsmith's own dashboard reading of the A/A experiment is
   still to be recorded there.
 - MDE dry run OK (model: 34.9% -> 41.3%, +18% relative).
-- Blocked: Claude in Chrome was not connected, so the A/A experiment is not yet completed in Flagsmith and the MDE experiment is
+- Blocked: the browser session was not connected, so the A/A experiment is not yet completed in Flagsmith and the MDE experiment is
   not yet created. Next: record Flagsmith's A/A reading, complete that experiment, create and START "SIM MDE" in `sim` (same flag,
   100% rollout, 50/50, primary `finding_fixed_clean` increase), then
   `pnpm simulate -- --world mde --seed 42 --n 3000 --env sim` (about 15 minutes). Then harm, then srm.
 
 ## Nov 27, 01:40 IST: MDE aborted, browser not connected, offline prep done
 - A/A done and recorded in `docs/results/sim-worlds.md` (experiment 740; Flagsmith shows a 90% "winner" banner, our rule says INCONCLUSIVE).
-- MDE seed 42 aborted at 1,500/3,000 (session closed mid-run). Owner chose: complete that partial experiment with "Roll out control"
-  without reading it, rerun MDE with `--seed 43` in a fresh experiment. Details in sim-worlds.md.
-- Claude in Chrome was NOT connected this session, so nothing changed in Flagsmith. The partial MDE experiment is still RUNNING in `sim`.
+- MDE seed 42: first read as aborted at 1,500/3,000, but it was still running and FINISHED 3,000/3,000 (our rule: WIN). The
+  seed 43 rerun the owner chose on the wrong basis is not needed (owner to confirm). Details in sim-worlds.md.
+- The browser session was NOT connected, so nothing changed in Flagsmith. The MDE experiment is still RUNNING in `sim` (data complete).
 - Offline: dry runs for MDE s43, harm, SRM and their expected verdicts are in sim-worlds.md. Found that the SRM world (10% drop,
   p = 0.033) wins under our rule unless Flagsmith itself warns. `scripts/expected-loss.ts` now prints our own SRM p and a NOTE
   (informational, rule unchanged; scripts only, so the `real` experiment stays valid). 104 tests pass, build and typecheck clean.
 - Live sites both return 200 (https://lintmus.vercel.app, https://lintmus-sim-demo.vercel.app).
-- Next (needs the browser): complete the partial MDE experiment, create and START "SIM MDE s43", run
-  `pnpm simulate -- --world mde --seed 43 --n 3000 --env sim` (keep the session open about 15 min), read Flagsmith vs `pnpm expected-loss`,
-  complete; then harm, then SRM (owner chose both: pre-registered `--drop 0.1`, then a labelled `--drop 0.2` extra, each its own experiment). Analysis of `real` 2026-11-29 11:00 IST.
+- Next (needs the browser): read and screenshot the MDE seed 42 experiment, record Flagsmith vs our rule, complete it with
+  "Roll out control"; then harm, then SRM (owner chose both: pre-registered `--drop 0.1`, then a labelled `--drop 0.2` extra, each its own experiment). Analysis of `real` 2026-11-29 11:00 IST.
+
+## Nov 27 (night): submission prep docs
+Docs only; nothing under `src/`, `tests/`, `scripts/` or config was touched, so the `real` experiment is unaffected. Nothing committed or pushed.
+- New: `docs/demo-script.md` (shot list within the 2:30 plan cap, beat 3 variants per rule row, inconclusive fallback, asset status).
+- New: `docs/submission-checklist.md` (official rules plus plan items, each Done / To do / Owner, checked against the files on disk).
+- Changed: `DECISION.md` gained an empty "Final result" template section (nothing removed).
+- New: `docs/analysis-runbook.md` (Nov 29 11:00 steps for experiment 725, `pnpm expected-loss` flags, rule mapping, Flagsmith actions).
+- Open items surfaced: README lacks a "How Flagsmith is used" section, the live URL and the video link; harm and SRM worlds not run live; MDE Flagsmith reading and screenshot missing; guardrail counts source UNVERIFIED (not attached in Flagsmith); two doc files mention a browser tool by name (reword before the final push).
+
+- Nov 27 (night): docs/README-draft-sections.md drafted for the owner to merge
+
+## Nov 27 (morning): status check
+- Browser session still not available, so nothing changed in Flagsmith. MDE experiment (seed 42) is still RUNNING in `sim` with complete data.
+- Checked all docs (tracked and untracked): none names an AI assistant or browser tool. Checklist row updated.
+- Still needs the browser, in order: read and screenshot the MDE experiment, complete it with "Roll out control"; create, run and record
+  harm (`--world harm`); then SRM `--drop 0.1` and the labelled `--drop 0.2` extra, each in its own experiment.
+- Still needs the owner: merge `docs/README-draft-sections.md` into README (Flagsmith usage, live URL, video link); confirm no seed 43 MDE rerun;
+  approve committing the docs. Analysis of `real` 2026-11-29 11:00 IST (`docs/analysis-runbook.md`).
+
+## Nov 27 (afternoon): sim worlds run live
+- MDE (exp 747): Flagsmith > 99% winner, +19.2%; our rule WIN. PASS. Completed, control rolled out.
+- Harm (exp 1415): Flagsmith "> 99% winner, roll out fix-first" (+26.3%); our rule LOSE (guardrail +5.89 pts). PASS. Key demo point:
+  Flagsmith judges only the primary, the pre-registered guardrail clause refuses. Completed, control rolled out.
+- SRM drop 0.1 (exp 1416): Flagsmith no SRM warning, > 99% winner; our rule WIN (own p = 0.021). FAIL, reported as is; rule
+  unchanged for `real`. Completed, control rolled out.
+- SRM EXTRA drop 0.2 (exp 1425, not pre-registered): Flagsmith shows NO SRM warning even at 55/45 (1,490 vs 1,200),
+  "> 99% winner" +26.4%; our rule WIN with its own SRM NOTE (p = 2.3e-8). FAIL. Conclusion: Flagsmith has no visible SRM check,
+  so the `real` analysis now has a manual SRM check (`docs/analysis-runbook.md` section 2): report the script's own SRM p
+  next to the verdict and flag p < 0.01 by hand (rule itself unchanged). Completed,
+  control rolled out. All four sim experiments are now completed; nothing is running in `sim`.
+- Nothing committed. `real` experiment untouched (sim only, docs only).

@@ -1,0 +1,14 @@
+$ node scripts/expected-loss.ts "--" "--control-n" "1487" "--control-conv" "493" "--variant-n" "1364" "--variant-conv" "566" "--guard-control" "7" "--guard-variant" "28" "--seed" "1"
+Own Beta-Binomial reading (NOT Flagsmith's number). seed=1 draws=100000, uniform Beta(1,1) prior
+primary   control 493/1487 = 33.15%   variant 566/1364 = 41.50%
+          chance to beat control 100.00%   mean diff 8.34 pts   95% CrI [4.79, 11.87] pts
+          expected loss of shipping 0.000 points
+guardrail control 7/1487 = 0.47%   variant 28/1364 = 2.05%   diff 1.58 pts   chance variant worse 99.99%
+          measured: true   losing: false
+srm       own chi-square p = 0.0212 (50/50 expected; informational, the rule uses --srm-warning)
+RULE 4: WIN
+  - chance to beat 100.0% > 95%
+  - 95% CrI [4.79, 11.87] points excludes 0
+  - expected loss 0.000 points < 0.5
+  - guardrail measured and not losing
+ACTION: Complete the experiment with rollout_decision = variant (fix-first). Keep the flag 7 days as a rollback switch, then remove the losing code path.
