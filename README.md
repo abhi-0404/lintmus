@@ -253,8 +253,10 @@ What this project does not claim, and where it can be wrong.
 - The rule voids a result only on Flagsmith's SRM warning. Before the live runs, an offline dry run already showed the
   risk: a 10% drop gives our own chi-square p around 0.03, so a strict SRM check would stay quiet.
 - Live, it was worse than that: Flagsmith showed no SRM warning at a 52/48 split (pre-registered 10% drop, own p =
-  0.021) or at a 55/45 split (20% drop extra, own p = 2.3e-8). Either Flagsmith runs no SRM check, or it does not show
-  one on this page. Our rule called both broken experiments a WIN. Reported as a FAIL.
+  0.021) or at a 55/45 split (20% drop extra, own p = 2.3e-8). The likely cause is open Flagsmith issue
+  [#9128](https://github.com/Flagsmith/flagsmith/issues/9128): the SRM p-value is null when the flag's default variant weights are 0, and starting an
+  experiment sets them to 0 (our flag shows 0% for `fix-first` while the experiment runs). We added our reproduction
+  as a [comment](https://github.com/Flagsmith/flagsmith/issues/9128#issuecomment-7237070153). Our rule called both broken experiments a WIN. Reported as a FAIL.
 - What we did: the rule itself is unchanged, because it is pre-registered. `pnpm expected-loss` prints our own SRM
   p-value and a NOTE when p < 0.01 without a Flagsmith warning. The analysis runbook adds a manual SRM check for the
   real result: the script's own p is reported next to the verdict, and p < 0.01 is flagged as "SRM suspected"
@@ -264,8 +266,9 @@ What this project does not claim, and where it can be wrong.
 
 ## Beta feedback for Flagsmith
 
-What we would change after running seven experiments on Flagsmith Cloud (one real, one smoke, five simulated worlds). Details, evidence and a draft upstream issue:
-[docs/flagsmith-feedback.md](docs/flagsmith-feedback.md).
+What we would change after running seven experiments on Flagsmith Cloud (one real, one smoke, five simulated worlds). Details and evidence:
+[docs/flagsmith-feedback.md](docs/flagsmith-feedback.md). Upstream: our SRM reproduction is a
+[comment on Flagsmith issue #9128](https://github.com/Flagsmith/flagsmith/issues/9128#issuecomment-7237070153).
 
 - Show a sample ratio mismatch check on the results page: a 55/45 split on a 50/50 rollout showed no warning (SIMULATED).
 - Allow guardrail metrics: with one metric per experiment, the page suggested rolling out a variant that made the

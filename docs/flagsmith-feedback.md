@@ -55,7 +55,13 @@ Read from the installed type definitions and shipped code (`docs/sdk-facts.md`).
 10. **The events pipeline is marked `@experimental @internal` in the JS types**, while the experiments product depends
     on it. Either the marker or the docs should change, so users know whether the signatures are stable.
 
-## Draft upstream issue (owner to file, not filed yet)
+## Upstream (posted Nov 28)
+
+Not filed as a new issue: it duplicates open issue [#9128](https://github.com/Flagsmith/flagsmith/issues/9128) (SRM p-value null when the flag's default variant
+weights are 0, which experiment creation sets). Our Cloud reproduction and the banner point were posted as a
+[comment on #9128](https://github.com/Flagsmith/flagsmith/issues/9128#issuecomment-7237070153). The original draft is kept below for reference.
+
+### Original draft (not filed)
 
 Title: Experiment results: show a sample ratio mismatch (SRM) check
 

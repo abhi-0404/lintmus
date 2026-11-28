@@ -41,7 +41,7 @@ Deadline: Nov 29 20:00 IST, late submissions not accepted. Target 14:00 IST, har
 | Live URL in README and in the repo About | Done | | README "Live" section has both URLs; repo About homepage is https://lintmus.vercel.app, topics set on Nov 28. |
 | README sections per plan 11 | Mostly done | Owner checks | Present now: live links, How Flagsmith is used with file:line, simulated results, honesty box, SRM finding, Results placeholder. "Beta feedback for Flagsmith" added (details in `docs/flagsmith-feedback.md`). "Impact" added. Still missing: video link and GIF. |
 | Rule review by Flagsmith staff: `docs/rule-review.md` | To do | Owner | File does not exist; needs the Discord feedback (owner). |
-| Upstream GitHub issue or docs PR, linked | Drafted | Owner files it | Draft issue "Experiment results: show a sample ratio mismatch (SRM) check" in `docs/flagsmith-feedback.md`. Filing on GitHub is the owner's action; then add the link to the README. |
+| Upstream GitHub issue or docs PR, linked | Done | | Draft was a duplicate of open issue #9128, so the reproduction was posted as a comment on Nov 28 (https://github.com/Flagsmith/flagsmith/issues/9128#issuecomment-7237070153); linked in README and `docs/flagsmith-feedback.md`. |
 | Blog (optional) | To do, optional | Owner | None on disk; can follow after submission. |
 | `docs/HANDOFF.md` updated | Done | | Updated; add the Nov 29 entry after the analysis. |
 | Reviewer pass on the final diff; every README claim vs evidence; no simulated number called real | To do | Reviewer | After the README is final. |
@@ -56,7 +56,7 @@ Until the analysis: no changes to `src/`, `tests/`, `scripts/` or config (voids 
 ## D. Owner to-do list (the short version)
 1. Done Nov 28: WeMakeDevs registration, Discord, Flagsmith star, repo About URL and topics.
 2. Capture screenshot: real result on Nov 29 11:00 (flag config, metrics page, MDE, harm and SRM are done).
-3. Discord: collect the Flagsmith staff review of the 5 rules; file the upstream issue or docs PR; write `docs/rule-review.md`.
+3. Discord: collect the Flagsmith staff review of the 5 rules (upstream comment on #9128 done); write `docs/rule-review.md`.
 4. Record beats 1, 2, 4, 5, 6 on Nov 28 evening and beat 3 on Nov 29; upload unlisted; test logged out; put the link in the README.
 5. Apply the analysis runbook at 11:00 on Nov 29 and complete the experiment in Flagsmith per the matched row.
 6. Approve the final README (tool mentions already reworded), run `pnpm test` and `pnpm build`, push, submit, save the confirmation.

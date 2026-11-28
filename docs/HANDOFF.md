@@ -218,3 +218,7 @@ Left (owner unless noted), deadline 2026-11-29 20:00 IST:
    with the browser connected; completing experiment 725 needs the owner's OK). Record first exposure time.
 3. Nov 29 11:30: beat 3, upload unlisted, video link in README and SUBMISSION, rerun test/build, scans, final push,
    submit on WeMakeDevs (Track 1), save the confirmation.
+- Upstream (owner approved): our SRM draft duplicated open Flagsmith issue #9128 (srm_p_value null when default variant
+  weights are 0), so it was posted as a comment instead:
+  https://github.com/Flagsmith/flagsmith/issues/9128#issuecomment-7237070153. README SRM finding now names #9128 as the
+  likely cause; feedback doc, checklist and demo script updated.
