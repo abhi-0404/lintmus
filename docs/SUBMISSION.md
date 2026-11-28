@@ -132,7 +132,7 @@ verdict and flags p < 0.01 by hand.
 
 | Criterion | How Lintmus meets it |
 |---|---|
-| Use of Flagsmith: is it core? do flags and experiments do real work? | The product's central UI is switched by a multivariate flag, and the exposure and four metrics are real Flagsmith events from live visitors. The decision to ship or refuse is read from Flagsmith's Bayesian results plus a stricter pre-registered rule. |
+| Use of Flagsmith: is it core? do flags and experiments do real work? | The product's central UI is switched by a multivariate flag, and the exposure and four metrics are sent as real Flagsmith events by the live site. The decision to ship or refuse is read from Flagsmith's Bayesian results plus a stricter pre-registered rule. |
 | Impact: real problem? would a developer or team use it? | Silent experiment bugs (events disabled, no exposure, a misspelled metric) leave an experiment on "Collecting data" for weeks, and the lint rules name each one with a copyable fix. Real demand is not yet measured; adoption evidence is the experiment's own traffic, PENDING. |
 | Creativity: new idea or a familiar idea taken somewhere new? | A linter that is also the subject of its own A/B test, with the question "does showing the fix first still win once blind-paste errors are counted?". The guardrail, a simulated A/A world showing the dashboard's 90% banner would ship a no-effect change, and a harm world where the dashboard says ship while the guardrail refuses are the unusual parts. |
 | Demo video: problem, what was built, how Flagsmith fits | Scripted in `docs/demo-script.md` (cap 2:30): the silent bug, the puzzle and a finding, the flag and metrics in Flagsmith, the pre-registered rule, the result. Video not recorded yet: <VIDEO_URL>. |
@@ -144,7 +144,7 @@ verdict and flags p < 0.01 by hand.
 | One experiment done well beats many features | One flag, one primary metric, one guardrail, one fixed analysis time. Everything else in the app serves that experiment. |
 | Clear hypothesis | Exact text in `EXPERIMENT.md` section 1, committed 2026-11-26 17:04 IST (commit 6b82376), before the real start. |
 | Versions behind a flag | `finding_style`, `explain_first` vs `fix_first`, identical content, only order and default-expanded state differ. |
-| Metric from real events | `finding_fixed_clean` is an Occurrence event sent by the browser SDK from live visitor edits. |
+| Metric from real events | `finding_fixed_clean` is an Occurrence event sent by the browser SDK when a visitor's edit clears the finding. |
 | Results you can explain | A five-row decision rule fixed in advance, the simulated worlds that test it, and a "Final result" template that is filled with real numbers only. Real result: PENDING. |
 
 ## Business lens

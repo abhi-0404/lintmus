@@ -27,11 +27,11 @@ flag, so the one-running-experiment lock is per environment.
 - Flagsmith (experiment 747, read 2026-11-27, data as of 12:24 UTC): identical counts (1,486 at 34.3%, 1,514 at 40.8%);
   fix-first +19.2%, 95% CrI [8.1%, 30.3%], > 99% chance to be best; banner "> 99% Winner Probability Confirmed". No SRM warning.
   Completed with "Roll out control", so `sim` serves `explain_first` again.
-- Files: `2026-11-27-sim-mde-s42.log`, `2026-11-27-sim-mde-banner.jpg`, `2026-11-27-sim-mde-results.jpg`.
+- Files: `2026-11-27-sim-mde-s42.log`, `2026-11-27-sim-mde.txt` (rule output, saved Nov 28), `2026-11-27-sim-mde-banner.jpg`, `2026-11-27-sim-mde-results.jpg`.
 - Must show: a win. Result: PASS. Flagsmith and our rule agree.
 - Note on a mistaken abort (2026-11-27 01:35 IST): the log was read at 1,500/3,000 while the run was still going and
   took it for an abort; on that wrong basis the owner picked a seed 43 rerun. The run completed, so the seed 42 data is complete and
-  a seed 43 rerun is not needed (owner to confirm). The seed 43 dry-run row below is kept only as a cross-check.
+  a seed 43 rerun is not needed (closed Nov 28: all published MDE numbers use the complete seed 42 data). The seed 43 dry-run row below is kept only as a cross-check.
 
 ## Harm (experiment 1415, seed 42): COMPLETE, 3,000 of 3,000
 - Sent: explain_first 1,550 exposed, 535 clean fixes (34.5%); fix_first 1,450 exposed, 632 (43.6%). Guardrail 6 vs 91

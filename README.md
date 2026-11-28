@@ -176,7 +176,7 @@ The events pipeline is marked experimental in the SDK types (`docs/sdk-facts.md`
 | Assignment (50/50 by identity hash), enrolment, exposures per arm | Nothing: it takes counts as input |
 | Occurrence rate, win probability, delta and 95% credible interval for the primary metric | Its own Beta-Binomial reading with a uniform Beta(1,1) prior, labelled "NOT Flagsmith's number" in every output (Flagsmith's prior is not documented in the repo, so the two can differ slightly) |
 | "Collecting data" until 50 identities and 5 conversions per arm | The same floors, read from `experiment.config.json` |
-| No SRM warning was shown in any `sim` world, even at a 55/45 split on a 50/50 rollout (threshold, if any, not documented) | Own chi-square SRM p-value, informational; the pre-registered rule voids only on Flagsmith's warning, so the analysis runbook reports this p by hand |
+| No SRM warning was shown in any `sim` world, even at a 55/45 split on a 50/50 rollout (threshold, if any, not documented; the pre-registered assumption in EXPERIMENT.md that Flagsmith checks SRM after 100 identities did not hold) | Own chi-square SRM p-value, informational; the pre-registered rule voids only on Flagsmith's warning, so the analysis runbook reports this p by hand |
 | A default recommendation banner ("Consider rolling out ... to all users") based on the primary metric only | The pre-registered 5-row ship or refuse rule: win needs chance to beat control above 95%, a 95% credible interval that excludes 0, expected loss of shipping under 0.5 points, and a guardrail with at least 5 events per arm that is not losing |
 | Nothing for the guardrail (not attachable, see above) | Guardrail difference in points from raw counts (loses if worse by more than 3 points) |
 
@@ -264,7 +264,7 @@ What this project does not claim, and where it can be wrong.
 
 ## Beta feedback for Flagsmith
 
-What we would change after running six experiments on Flagsmith Cloud. Details, evidence and a draft upstream issue:
+What we would change after running seven experiments on Flagsmith Cloud (one real, one smoke, five simulated worlds). Details, evidence and a draft upstream issue:
 [docs/flagsmith-feedback.md](docs/flagsmith-feedback.md).
 
 - Show a sample ratio mismatch check on the results page: a 55/45 split on a 50/50 rollout showed no warning (SIMULATED).

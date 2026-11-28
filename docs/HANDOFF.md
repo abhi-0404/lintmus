@@ -193,6 +193,28 @@ Owner, in order (deadline 2026-11-29 20:00 IST, target 14:00):
 1. Nov 28: record beats 1, 2, 4a, 4b, 5, 6 (`docs/demo-script.md`); flag config and metrics page screenshots;
    incognito and uBlock check; repo About URL; WeMakeDevs registration and team; star Flagsmith; file the SRM issue
    from `docs/flagsmith-feedback.md` (optional) and add its link.
-2. Nov 29 11:00: `docs/analysis-runbook.md` with the browser connected (Claude can do the dashboard read, screenshots,
+2. Nov 29 11:00: `docs/analysis-runbook.md` with the browser connected (the dashboard read, screenshots,
    rule run, DECISION.md and README Results; completing experiment 725 per the matched row needs your OK).
 3. Nov 29 11:30: beat 3, edit, upload unlisted, put the video link in README and SUBMISSION.md, final push, submit.
+
+## Nov 28 (afternoon, 14:00-14:30 IST): pre-submission checks
+Done (docs only; app code diff against b183960 is empty):
+- Owner reported WeMakeDevs registration and Discord done. Flagsmith repo starred (abhi-0404), repo topics set,
+  About homepage already https://lintmus.vercel.app.
+- `pnpm test` 104/104 and `pnpm build` clean on 7b6f8b1, appended to `docs/results/2026-11-28-test-build.txt`.
+  Both live sites 200 anonymously in under 1 s.
+- Note: `scripts/expected-loss.ts` differs from b183960 (commit 6369c6a added an informational SRM print only;
+  decision logic unchanged, not covered by the void rule, which names layouts, exposure and metric code).
+- Scans: no em or en dashes, no AI tool names (two mentions reworded), no keys, all commits by Abhishek Kumar.
+- Reviewer pass on README and SUBMISSION: no simulated number called real, all file:line refs and links good. Fixed:
+  experiment count is seven (README, flagsmith-feedback), SRM row notes the pre-registered 100-identity assumption did
+  not hold, SUBMISSION no longer claims live-visitor events as fact, MDE rule output saved
+  (`docs/results/2026-11-27-sim-mde.txt`, RULE 4 WIN, matches README), seed 43 note closed.
+
+Left (owner unless noted), deadline 2026-11-29 20:00 IST:
+1. Nov 28: incognito and uBlock check; record beats 1, 2, 4a, 4b, 5, 6; rollout and rollback recording in `sim`;
+   Discord rule review -> `docs/rule-review.md`; file the SRM issue (optional) and link it.
+2. Nov 29 11:00: analysis runbook (dashboard read, screenshots, rule run, DECISION.md, README Results can be done
+   with the browser connected; completing experiment 725 needs the owner's OK). Record first exposure time.
+3. Nov 29 11:30: beat 3, upload unlisted, video link in README and SUBMISSION, rerun test/build, scans, final push,
+   submit on WeMakeDevs (Track 1), save the confirmation.

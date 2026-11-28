@@ -1,7 +1,7 @@
 # Beta feedback for Flagsmith Experimentation
 
-From building Lintmus and running six experiments on Flagsmith Cloud (Nov 26-28, 2026): one real experiment (725) and
-five simulated worlds in a separate `sim` environment (740, 747, 1415, 1416, 1425). Every point below is something we
+From building Lintmus and running seven experiments on Flagsmith Cloud (Nov 26-28, 2026): one real experiment (725),
+one smoke experiment (721) and five simulated worlds in a separate `sim` environment (740, 747, 1415, 1416, 1425). Every point below is something we
 observed or read in the shipped SDK code; the evidence is linked. Simulated numbers are labelled as such.
 
 ## Experiment results page
