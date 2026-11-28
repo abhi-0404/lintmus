@@ -35,7 +35,7 @@ Deadline: Nov 29 20:00 IST, late submissions not accepted. Target 14:00 IST, har
 | `docs/results/`: MDE scorecard | Done | | Experiment 747: `2026-11-27-sim-mde-banner.jpg`, `-mde-results.jpg`; Flagsmith > 99%, our rule WIN; completed with control. |
 | `docs/results/`: harm scorecard | Done | | Experiment 1415: `-harm-banner.jpg`, `-harm-results.jpg`, `-harm.txt`; Flagsmith says ship, our rule LOSE (guardrail). PASS. |
 | `docs/results/`: SRM scorecard | Done (result: FAIL) | | Experiments 1416 (10%) and 1425 (20% extra): `-srm-d10-*`, `-srm-d20-*`. No Flagsmith SRM warning in either; reported as a failure in README and `sim-worlds.md`; manual SRM check added to the runbook. |
-| `docs/results/`: flag config and metrics page screenshots | To do | Owner | Not on disk. Only the smoke screenshot (`2026-11-27-sim-smoke-results.jpg`) and the A/A images exist. |
+| `docs/results/`: flag config and metrics page screenshots | Done | Claude | `2026-11-28-real-flag-config.jpg`, `2026-11-28-real-flag-segment-split.jpg`, `2026-11-28-real-metrics.jpg` (environment `real`, view-only, nothing edited). |
 | Rollout and one-flip rollback recorded on the sim-demo deployment | To do | Owner | Plan Phase 5. Not recorded. |
 | Video: under 2:30, 1080p, captions, unlisted, tested logged out, linked in README | To do | Owner | See above. |
 | Live URL in README and in the repo About | Half done | Owner | README "Live" section has both URLs. Repo About is a GitHub setting: to do. |
@@ -56,7 +56,7 @@ Until the analysis: no changes to `src/`, `tests/`, `scripts/` or config (voids 
 ## D. Owner to-do list (the short version)
 1. WeMakeDevs registration, team and Discord compliance confirmed; star the Flagsmith repo.
 2. Set the repo About URL and topics (the repo is public).
-3. Capture screenshots: flag config, metrics page, real result on Nov 29 11:00 (MDE, harm and SRM are done).
+3. Capture screenshot: real result on Nov 29 11:00 (flag config, metrics page, MDE, harm and SRM are done).
 4. Discord: collect the Flagsmith staff review of the 5 rules; file the upstream issue or docs PR; write `docs/rule-review.md`.
 5. Record beats 1, 2, 4, 5, 6 on Nov 28 evening and beat 3 on Nov 29; upload unlisted; test logged out; put the link in the README.
 6. Apply the analysis runbook at 11:00 on Nov 29 and complete the experiment in Flagsmith per the matched row.

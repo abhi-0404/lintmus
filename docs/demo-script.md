@@ -16,9 +16,9 @@ Status: draft written Nov 27 (night), updated Nov 28 00:45 IST with the live sim
 |---|---|
 | Live site https://lintmus.vercel.app | 200 on Nov 28 00:40 IST (checked with curl, no login). Still check logged out in a browser before recording. |
 | Sim demo https://lintmus-sim-demo.vercel.app | 200 on Nov 28 00:40 IST; same caveat. |
-| Flagsmith: flag `finding_style` (control `explain_first`, variation key `fix-first`) | Exists (HANDOFF). Screenshot not on disk: To do. |
+| Flagsmith: flag `finding_style` (control `explain_first`, variation key `fix-first`) | Done: `docs/results/2026-11-28-real-flag-config.jpg` (flag locked by running experiment 725) and `2026-11-28-real-flag-segment-split.jpg` (experiment-managed 50% segment override). |
 | Flagsmith: `real` experiment 725 page | Running since 2026-11-27 00:57 IST. Result screenshot To do (Nov 29 11:00). |
-| Flagsmith: metrics page | Screenshot not on disk: To do. |
+| Flagsmith: metrics page | Done: `docs/results/2026-11-28-real-metrics.jpg` (4 metrics, `finding_fixed_clean` used in 1 experiment). |
 | EXPERIMENT.md commit 6b82376 (2026-11-26 17:04) then real start 2026-11-27 00:57 | On disk (`EXPERIMENT.md`, `DECISION.md`). |
 | A/A world: Flagsmith 90% banner + results table | On disk: `docs/results/2026-11-27-sim-aa-banner.jpg`, `...-sim-aa-results.jpg`, `2026-11-27-sim-aa.txt`. |
 | MDE world (747) | On disk: `2026-11-27-sim-mde-banner.jpg`, `-mde-results.jpg`. Flagsmith > 99% winner, our rule WIN. |
